@@ -8,6 +8,10 @@ use Psr\Http\Message\{
     ResponseInterface as Response
 };
 
+use App\Models\User;
+
+
+
 class HomeController extends Controller
 {
     public function index(Request $request, Response $response)
@@ -19,6 +23,11 @@ class HomeController extends Controller
 
     public function test(Request $request, Response $response)
     {
-        return $response->withJson(['status' => 200]);
+        $user = User::find(1);
+
+        return $response->withJson([
+            'user' => $user,
+            'status' => 200
+        ]);
     }
 }
