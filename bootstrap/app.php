@@ -16,6 +16,17 @@ $app = new Slim\App([
             'name' => getenv('APP_NAME')
         ],
 
+        'db' => [
+            'driver' => getenv('DB_CONNECTION'),
+            'host' => getenv('DB_HOST'),
+            'database' => getenv('DB_DATABASE'),
+            'username' => getenv('DB_USERNAME'),
+            'password' => getenv('DB_PASSWORD'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ],
+
         'views' => [
             'cache' => getenv('VIEW_CACHE_DISABLED') === 'true' ? false : __DIR__ . '/../storage/views'
         ]
@@ -23,6 +34,15 @@ $app = new Slim\App([
 ]);
 
 $container = $app->getContainer();
+
+//elquent
+
+$capsule = new \Illuminate\Database\Capsule\Manager;
+$capsule->addConnection($container->get('settings')->get('db'));
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
+//twig 
 
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [

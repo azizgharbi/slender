@@ -10,10 +10,15 @@ use Psr\Http\Message\{
 
 class HomeController extends Controller
 {
-    public function index(Request $request, Response $response, $args)
+    public function index(Request $request, Response $response)
     {
         return $this->c->view->render($response, 'home/index.twig', [
             'appName' => $this->c->settings['app']['name'],
         ]);
+    }
+
+    public function test(Request $request, Response $response)
+    {
+        return $response->withJson(['status' => 200]);
     }
 }
